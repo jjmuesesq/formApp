@@ -19,6 +19,24 @@ export class BasicPageComponent implements OnInit {
     //this.myForm.reset( rtx5090 );
   }
 
+  isValidField( field: string ): boolean | null {
+    return this.myForm.controls[field].errors && this.myForm.controls[field].touched;
+  }
+
+  getFieldError( field:string ): string | null {
+    if(!this.myForm.controls[field]) return null;
+    const errors = this.myForm.controls[field].errors || {};
+    for (const key of Object.keys(errors)) {
+      switch ( key ) {
+        case 'required':
+          return 'Este campo es requerido.';
+        case 'minlength':
+          return `Minimo ${ errors['minlength'].requiredLength } characters.`;
+      }
+    }
+    return null;
+  }
+
   /*public myForm: FormGroup = new FormGroup({
     name: new FormControl(''),
     price: new FormControl(0),
